@@ -14,6 +14,12 @@ if (isset($_POST['signup-submit'])) {
 		header("Location: ../signup.php?error=emptyfields&username=" . $username . "&email=" . $email);
 		exit();
 	}
+
+	// Checks for an appropriate password length
+	elseif (strlen($username) <= 5) {
+		header("Location: ../signup.php?error=shortusername");	
+		exit();
+	}
 	// Check for invalid characters in the username and an invalid email
 	elseif (!preg_match("/^[a-zA-Z0-9]*$/", $username) && (!filter_var($email, FILTER_VALIDATE_EMAIL))) {
 		header("Location: ../signup.php?error=invalidusernameandemail");	
@@ -34,7 +40,12 @@ if (isset($_POST['signup-submit'])) {
 		header("Location: ../signup.php?error=passwordcheck&username=" . $username . "&email=" . $email);
 		exit();
 	}
-	//Check for a unique username that hasn't already been used by another user
+	// Checks for an appropriate password length
+	elseif (strlen($password) <= 5) {
+		header("Location: ../signup.php?error=shortpassword");	
+		exit();
+	}
+	// Check for a unique username that hasn't already been used by another user
 	else {
 		$sql = "SELECT username FROM users WHERE username=?";
 		$stmt = mysqli_stmt_init($connection);
